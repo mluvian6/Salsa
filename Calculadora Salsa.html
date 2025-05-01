@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Recetas de Salsa</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .input-section {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .recipe-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .recipe {
+            flex: 1;
+            min-width: 300px;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .total-row {
+            font-weight: bold;
+            background-color: #e7f3ff !important;
+        }
+        input {
+            padding: 8px;
+            width: 80px;
+            text-align: center;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora de Recetas de Salsa</h1>
+        
+        <div class="input-section">
+            <label for="recipeCount">Número de recetas:</label>
+            <input type="number" id="recipeCount" min="1" value="1" step="1">
+            <button onclick="calculateRecipe()">Calcular</button>
+        </div>
+
+        <div class="recipe-container">
+            <div class="recipe">
+                <h2>Receta Original</h2>
+                <table id="originalRecipe">
+                    <thead>
+                        <tr>
+                            <th>Ingrediente</th>
+                            <th>Cantidad Original</th>
+                            <th>Cantidad Ajustada</th>
+                            <th>Litros</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Mayonesa</td>
+                            <td>1 taza</td>
+                            <td id="mayo-adj">1 taza</td>
+                            <td id="mayo-l">0.24 L</td>
+                        </tr>
+                        <tr>
+                            <td>Ketchup</td>
+                            <td>3/8 taza</td>
+                            <td id="ketchup-adj">3/8 taza</td>
+                            <td id="ketchup-l">0.09 L</td>
+                        </tr>
+                        <tr>
+                            <td>Jugo de pickles lacto fermentados</td>
+                            <td>1/4 taza</td>
+                            <td id="pickle-adj">1/4 taza</td>
+                            <td id="pickle-l">0.06 L</td>
+                        </tr>
+                        <tr>
+                            <td>Mostaza</td>
+                            <td>12 ml</td>
+                            <td id="mustard-adj">12 ml</td>
+                            <td id="mustard-l">0.012 L</td>
+                        </tr>
+                        <tr>
+                            <td>Lea Perrins</td>
+                            <td>3 dashes</td>
+                            <td id="lea-adj">3 dashes</td>
+                            <td id="lea-l">0.002 L</td>
+                        </tr>
+                        <tr>
+                            <td>Sal</td>
+                            <td>1/4 cucharadita</td>
+                            <td id="salt-adj">1/4 cucharadita</td>
+                            <td id="salt-l">0.001 L</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td colspan="3"><strong>TOTAL</strong></td>
+                            <td id="original-total">0.405 L</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="recipe">
+                <h2>Receta Spicy</h2>
+                <table id="spicyRecipe">
+                    <thead>
+                        <tr>
+                            <th>Ingrediente</th>
+                            <th>Cantidad Original</th>
+                            <th>Cantidad Ajustada</th>
+                            <th>Litros</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Mayonesa</td>
+                            <td>1 taza</td>
+                            <td id="spicy-mayo-adj">1 taza</td>
+                            <td id="spicy-mayo-l">0.24 L</td>
+                        </tr>
+                        <tr>
+                            <td>Ketchup</td>
+                            <td>3/8 taza</td>
+                            <td id="spicy-ketchup-adj">3/8 taza</td>
+                            <td id="spicy-ketchup-l">0.09 L</td>
+                        </tr>
+                        <tr>
+                            <td>Jugo de pickles picantes</td>
+                            <td>1/4 taza</td>
+                            <td id="spicy-pickle-adj">1/4 taza</td>
+                            <td id="spicy-pickle-l">0.06 L</td>
+                        </tr>
+                        <tr>
+                            <td>Jalapeños molidos</td>
+                            <td>1/2 taza</td>
+                            <td id="jalapeno-adj">1/2 taza</td>
+                            <td id="jalapeno-l">0.12 L</td>
+                        </tr>
+                        <tr>
+                            <td>Mostaza</td>
+                            <td>12 ml</td>
+                            <td id="spicy-mustard-adj">12 ml</td>
+                            <td id="spicy-mustard-l">0.012 L</td>
+                        </tr>
+                        <tr>
+                            <td>Sal</td>
+                            <td>1/4 cucharadita</td>
+                            <td id="spicy-salt-adj">1/4 cucharadita</td>
+                            <td id="spicy-salt-l">0.001 L</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td colspan="3"><strong>TOTAL</strong></td>
+                            <td id="spicy-total">0.523 L</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Valores en litros para una receta
+        const originalValues = {
+            mayo: 0.24,      // 1 taza = 240ml
+            ketchup: 0.09,   // 3/8 taza = 90ml
+            pickle: 0.06,    // 1/4 taza = 60ml
+            mustard: 0.012,  // 12ml
+            lea: 0.002,      // aproximadamente 2ml para 3 dashes
+            salt: 0.001      // aproximadamente 1ml
+        };
+
+        const spicyValues = {
+            mayo: 0.24,      // 1 taza = 240ml
+            ketchup: 0.09,   // 3/8 taza = 90ml
+            pickle: 0.06,    // 1/4 taza = 60ml
+            jalapeno: 0.12,  // 1/2 taza = 120ml
+            mustard: 0.012,  // 12ml
+            salt: 0.001      // aproximadamente 1ml
+        };
+
+        // Función para formatear fracciones
+        function formatFraction(num) {
+            if (num === 1) return "1";
+            if (num === 0.5) return "1/2";
+            if (num === 0.25) return "1/4";
+            if (num === 0.75) return "3/4";
+            if (num === 0.375) return "3/8";
+            if (num === 0.125) return "1/8";
+            return num.toString();
+        }
+
+        function calculateRecipe() {
+            const recipeCount = parseFloat(document.getElementById("recipeCount").value) || 1;
+            
+            // Actualizar receta original
+            document.getElementById("mayo-adj").textContent = recipeCount === 1 ? "1 taza" : `${recipeCount} tazas`;
+            document.getElementById("mayo-l").textContent = (originalValues.mayo * recipeCount).toFixed(3) + " L";
+            
+            document.getElementById("ketchup-adj").textContent = recipeCount === 1 ? "3/8 taza" : `${formatFraction(recipeCount * 0.375)} tazas`;
+            document.getElementById("ketchup-l").textContent = (originalValues.ketchup * recipeCount).toFixed(3) + " L";
+            
+            document.getElementById("pickle-adj").textContent = recipeCount === 1 ? "1/4 taza" : `${formatFraction(recipeCount * 0.25)} tazas`;
+            document.getElementById("pickle-l").textContent = (originalValues.pickle * recipeCount).toFixed(3) + " L";
+            
+            document.getElementById("mustard-adj").textContent = (12 * recipeCount) + " ml";
+            document.getElementById("mustard-l").textContent = (originalValues.mustard * recipeCount).toFixed(3) + " L";
+            
+            document.getElementById("lea-adj").textContent = (3 * recipeCount) + " dashes";
+            document.getElementById("lea-l").textContent = (originalValues.lea * recipeCount).toFixed(3) + " L";
+            
+            document.getElementById("salt-adj").textContent = recipeCount === 1 ? "1/4 cucharadita" : `${formatFraction(recipeCount * 0.25)} cucharaditas`;
+            document.getElementById("salt-l").textContent = (originalValues.salt * recipeCount).toFixed(3) + " L";
+            
+            const originalTotal = Object.values(originalValues).reduce((a, b) => a + b, 0) * recipeCount;
+            document.getElementById("original-total").textContent = originalTotal.toFixed(3) + " L";
+            
+            // Actualizar receta spicy
+            document.getElementById("spicy-mayo-adj").textContent = recipeCount === 1 ? "1 taza" : `${recipeCount} tazas`;
+            document.getElementById("spicy-mayo-l").textContent = (spicyValues.mayo * recipeCount).toFixed(3) + " L";
+            
+            document.getElementById("spicy-ketchup-adj").textContent = recipeCount === 1 ? "3/8 taza" : `${formatFraction(recipeCount * 0.375)} tazas`;
+            document.getElementById("spicy-ketchup-l").textContent = (spicyValues.ketchup * recipeCount).toFixed(3) + " L";
+            
+            document.getElementById("spicy-pickle-adj").textContent = recipeCount === 1 ? "1/4 taza" : `${formatFraction(recipeCount * 0.25)} tazas`;
+            document.getElementById("spicy-pickle-l").textContent = (spicyValues.pickle * recipeCount).toFixed(3) + " L";
+            
+            document.getElementById("jalapeno-adj").textContent = recipeCount === 1 ? "1/2 taza" : `${formatFraction(recipeCount * 0.5)} tazas`;
+            document.getElementById("jalapeno-l").textContent = (spicyValues.jalapeno * recipeCount).toFixed(3) + " L";
+            
+            document.getElementById("spicy-mustard-adj").textContent = (12 * recipeCount) + " ml";
+            document.getElementById("spicy-mustard-l").textContent = (spicyValues.mustard * recipeCount).toFixed(3) + " L";
+            
+            document.getElementById("spicy-salt-adj").textContent = recipeCount === 1 ? "1/4 cucharadita" : `${formatFraction(recipeCount * 0.25)} cucharaditas`;
+            document.getElementById("spicy-salt-l").textContent = (spicyValues.salt * recipeCount).toFixed(3) + " L";
+            
+            const spicyTotal = Object.values(spicyValues).reduce((a, b) => a + b, 0) * recipeCount;
+            document.getElementById("spicy-total").textContent = spicyTotal.toFixed(3) + " L";
+        }
+
+        // Calcular para la primera vez
+        calculateRecipe();
+    </script>
+</body>
+</html>
